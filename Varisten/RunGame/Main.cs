@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Varisten.Objects;
 using Varisten.Objects.Characters;
 
+// dotnet add "C:\Users\aprendiz.informatica\Desktop\Varisten-Official-Game-\Varisten\Varisten.csproj" package VelcroPhysics --prerelease
 // Para publicar:
 // dotnet publish -c Release -r win-x64 /p:PublishReadyToRun=false /p:TieredCompilation=false --self-contained
 namespace Varisten.RunGame
 {
     public class Main : Engine
     {
+
         // Keyboard
         int keyRight;
         int keyLeft;
@@ -29,7 +28,7 @@ namespace Varisten.RunGame
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
-        
+
         protected override void Initialize()
         {
             player = new Player("Fallzin");
@@ -65,7 +64,7 @@ namespace Varisten.RunGame
                 keyDown = 1;
 
             #region Player
-            
+
             player.HorizontalSpeed = player.Speed * (float)gameTime.ElapsedGameTime.TotalSeconds * (keyRight - keyLeft);
             player.X += player.HorizontalSpeed;
             #endregion
@@ -77,10 +76,11 @@ namespace Varisten.RunGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            // O tipo "Vector2" existem em "MonoGame.Framework, Version=3.8.1.303, Culture=neltral, PublicKeyToken=null" e "VelcroPhysics, Version=1.0.0.0, Culture=neltral, PublicKeyToken=null"
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp); // Inicia o desenho com a configuração de Pixel perfect
             _spriteBatch.Draw(player.CurrentSprite, new Vector2(player.X, player.Y), Color.White);
             _spriteBatch.End();
-
+            
             base.Draw(gameTime);
         }
     }

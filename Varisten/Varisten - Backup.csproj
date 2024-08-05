@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
@@ -15,12 +15,18 @@
     <EmbeddedResource Include="Icon.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FarseerPhysics" Version="3.5.0" />
+    <PackageReference Include="ImGui.NET" Version="1.88.0" />
+    <PackageReference Include="Json.Net" Version="1.0.33" />
+    <PackageReference Include="MonoGame.Aseprite" Version="6.0.6" />
     <PackageReference Include="MonoGame.Extended" Version="4.0.0" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="TiledSharp" Version="1.0.1" />
     <PackageReference Include="Xssp.MonoGame.Primitives2D.DesktopGL" Version="2.0.0" />
+    <PackageReference Include="Xssp.MonoGame.Primitives2D.WindowsDX" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scenes\" />
