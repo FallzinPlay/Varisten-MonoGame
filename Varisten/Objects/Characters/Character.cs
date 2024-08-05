@@ -10,8 +10,6 @@ namespace Varisten.Objects.Characters
     {
         // Geral
         public string Name { get; set; }
-        public Sprite Sprites { get; set; }
-        public Texture2D CurrentSprite { get; set; }
         // Movement
         public float HorizontalSpeed { get; set; }
         public float VerticalSpeed { get; set; }
