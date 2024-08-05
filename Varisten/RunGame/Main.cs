@@ -1,47 +1,47 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Varisten.Objects;
+using Varisten.Objects.Characters;
 
 // Para publicar:
 // dotnet publish -c Release -r win-x64 /p:PublishReadyToRun=false /p:TieredCompilation=false --self-contained
-namespace Varisten
+namespace Varisten.RunGame
 {
-    public class Game1 : Game
+    public class Main : Engine
     {
-        ///
-        Vector2 originPoint;
-        Texture2D sprite;
-        Vector2 position;
-        float speed;
-        ///
+        // Keyboard
+        int keyRight;
+        int keyLeft;
+        int keyUp;
+        int keyDown;
+
+        Player player;
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        public Game1()
+        public Main()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
-
+        
         protected override void Initialize()
         {
-            ///
-            position = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-            speed = 100f;
-            ///
+            player = new Player("Fallzin");
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            ///
             GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp; // Faz com que o sprite seja desenhado limpo
-            sprite = Content.Load<Texture2D>("Marine");
-            ///
+
+            player.CurrentSprite = Content.Load<Texture2D>("Marine");
         }
 
         protected override void Update(GameTime gameTime)
@@ -49,18 +49,27 @@ namespace Varisten
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            ///
-            var kstate = Keyboard.GetState();
-            if (kstate.IsKeyDown(Keys.D))
-                position.X += speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            else if (kstate.IsKeyDown(Keys.A))
-                position.X -= speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            // Keyboard
+            keyRight = 0;
+            keyLeft = 0;
+            keyUp = 0;
+            keyDown = 0;
+            var kState = Keyboard.GetState();
+            if (kState.IsKeyDown(Keys.D))
+                keyRight = 1;
+            if (kState.IsKeyDown(Keys.A))
+                keyLeft = 1;
+            if (kState.IsKeyDown(Keys.W))
+                keyUp = 1;
+            if (kState.IsKeyDown(Keys.S))
+                keyDown = 1;
 
-            if (kstate.IsKeyDown(Keys.W))
-                position.Y -= speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            else if (kstate.IsKeyDown(Keys.S))
-                position.Y += speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            ///
+            #region Player
+            
+            player.HorizontalSpeed = player.Speed * (float)gameTime.ElapsedGameTime.TotalSeconds * (keyRight - keyLeft);
+            player.X += player.HorizontalSpeed;
+            #endregion
+
             base.Update(gameTime);
         }
 
@@ -68,11 +77,10 @@ namespace Varisten
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            ///
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp); // Inicia o desenho com a configuração de Pixel perfect
-            _spriteBatch.Draw(sprite, position, null, Color.White, 0f, new Vector2(sprite.Width / 2, sprite.Height / 2), 3f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(player.CurrentSprite, new Vector2(player.X, player.Y), Color.White);
             _spriteBatch.End();
-            ///
+
             base.Draw(gameTime);
         }
     }
