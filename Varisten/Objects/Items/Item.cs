@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Varisten.Objects.Atributes;
+using Effect = Varisten.Objects.Atributes.Effect;
 
 namespace Varisten.Objects.Items
 {

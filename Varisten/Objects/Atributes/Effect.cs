@@ -1,4 +1,4 @@
-﻿namespace Varisten.Objects
+﻿namespace Varisten.Objects.Atributes
 {
     public class Effect
     {

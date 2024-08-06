@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace Varisten.Objects
+namespace Varisten.Objects.Atributes
 {
     public class Sprite
     {

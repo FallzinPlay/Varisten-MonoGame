@@ -1,35 +1,50 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoGame.Extended.Collisions.Layers;
 using System.Linq;
+using System.Numerics;
 using Varisten.Objects;
+using Varisten.Objects.Characters;
 
 namespace Varisten
 {
     public class Engine : Game
     {
-        public string CollisionVerify(Instance inst1, Instance inst2)
+        public sbyte HorizontalMeeting(Instance inst1, Instance inst2)
         {
-            // Calcula a interseção dos retângulos
-            Rectangle intersection = Rectangle.Intersect(inst1.Hitbox, inst2.Hitbox);
-
-            // Verifica a direção da colisão
-            if (inst1.Hitbox.Intersects(inst2.Hitbox))
+            sbyte _dir = 0;
+            // Verify if the inst1's hortizontal position is not taller or smaller than inst2's horizontal position
+            if (inst1.Hitbox.Bottom.Y > inst2.Hitbox.Top.Y + 1
+                    && inst1.Hitbox.Top.Y < inst2.Hitbox.Bottom.Y - 1)
             {
-                if (intersection.Width >= intersection.Height)
-                {
-                    if (inst1.Hitbox.Top < inst2.Hitbox.Top)
-                        return "Top";
-                    else
-                        return "Bottom";
-                }
-                else
-                {
-                    if (inst1.Hitbox.Left < inst2.Hitbox.Left)
-                        return "Left";
-                    else
-                        return "Right";
-                }
+                // collision on the right
+                if (inst1.Hitbox.Right.X >= inst2.Hitbox.Left.X
+                    && inst1.Hitbox.Right.X < inst2.Hitbox.Right.X)
+                    _dir = 1;
+                // collision on the left
+                if (inst1.Hitbox.Left.X <= inst2.Hitbox.Right.X
+                    && inst1.Hitbox.Left.X > inst2.Hitbox.Left.X)
+                    _dir = -1;
             }
-            return null;
+            return _dir;
+        }
+
+        public sbyte VerticalMeeting(Instance inst1, Instance inst2)
+        {
+            sbyte _dir = 0;
+            // Verify if the inst1's vertical position is not taller or smaller than inst2's vertical position
+            if (inst1.Hitbox.Right.X > inst2.Hitbox.Left.X + 1
+                    && inst1.Hitbox.Left.X < inst2.Hitbox.Right.X - 1)
+            {
+                // collision on the top
+                if (inst1.Hitbox.Top.Y <= inst2.Hitbox.Bottom.Y
+                    && inst1.Hitbox.Top.Y > inst2.Hitbox.Top.Y)
+                    _dir = -1;
+                // collision on the bottom
+                if (inst1.Hitbox.Bottom.Y >= inst2.Hitbox.Top.Y
+                    && inst1.Hitbox.Bottom.Y < inst2.Hitbox.Bottom.Y)
+                    _dir = 1;
+            }
+            return _dir;
         }
     }
 }

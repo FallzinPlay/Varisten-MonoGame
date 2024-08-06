@@ -11,8 +11,10 @@ namespace Varisten.Objects.Characters
         // Geral
         public string Name { get; set; }
         // Movement
-        public float HorizontalSpeed { get; set; }
-        public float VerticalSpeed { get; set; }
+        public float RightSpeed { get; set; }
+        public float LeftSpeed { get; set; }
+        public float UpSpeed { get; set; }
+        public float DownSpeed { get; set; }
         public float Speed { get; protected set; }
         // Level
         public int Level { get; protected set; } = 1;
