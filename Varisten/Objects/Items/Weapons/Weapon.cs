@@ -9,5 +9,7 @@ namespace Varisten.Objects.Items.Weapons
         public double Damage { get; protected set; }
         // Level
         public int NecessaryLevel { get; protected set; }
+
+        public Weapon(Texture2D hitboxSprite) : base(hitboxSprite) { }
     }
 }

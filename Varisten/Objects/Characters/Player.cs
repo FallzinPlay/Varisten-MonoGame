@@ -6,7 +6,7 @@ namespace Varisten.Objects.Characters
 {
     public class Player : Character
     {
-        public Player(string name)
+        public Player(Texture2D hitboxSprite, string name) : base(hitboxSprite)
         {
             Name = name;
             Speed = 100f;
@@ -20,8 +20,6 @@ namespace Varisten.Objects.Characters
             CounterattackChance = 1.25d;
             MaxBagWeight = 20;
             Coins = 5.00d;
-
-            ItemCollect(new Stick() as Item);
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Varisten.Objects.Items.Weapons
 {
    public class Stick : Weapon
     {
-        public Stick()
+        public Stick(Texture2D hitboxSprite) : base(hitboxSprite)
         {
             Name = "Stick";
             Weight = 1.50d;

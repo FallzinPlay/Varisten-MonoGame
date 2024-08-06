@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoGame.Extended.Collisions.Layers;
-using System.Linq;
-using System.Numerics;
-using Varisten.Objects;
-using Varisten.Objects.Characters;
 
-namespace Varisten
+namespace EngineFP
 {
     public class Engine : Game
     {

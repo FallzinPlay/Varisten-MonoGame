@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+using EngineFP;
 using Microsoft.Xna.Framework.Graphics;
 using Varisten.Objects.Items;
 using Varisten.Objects.Items.Weapons;
@@ -39,6 +39,8 @@ namespace Varisten.Objects.Characters
         public double MaxBagWeight { get; protected set; }
         // Equipment
         public Weapon Weapon { get; protected set; }
+
+        public Character(Texture2D hitboxSprite) : base(hitboxSprite) { }
 
         // Chance to do
         private bool Dodge()

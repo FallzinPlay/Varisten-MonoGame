@@ -1,10 +1,10 @@
 ﻿using MonoGame.Extended;
 
-namespace Varisten.Objects.Atributes
+namespace EngineFP
 {
     public class Hitbox
     {
-        public RectangleF Top {  get; set; }
+        public RectangleF Top { get; set; }
         public RectangleF Bottom { get; set; }
         public RectangleF Left { get; set; }
         public RectangleF Right { get; set; }
