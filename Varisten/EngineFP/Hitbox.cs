@@ -12,10 +12,10 @@ namespace EngineFP
         // Make a rectangle arround the inst using it's sprite (the origin point must be at the top-left)
         public Hitbox(Instance inst)
         {
-            Top = new RectangleF(inst.X, inst.Y, inst.Sprite.Width, 1f);
-            Bottom = new RectangleF(inst.X, inst.Y + inst.Sprite.Height, inst.Sprite.Width, 1f);
-            Right = new RectangleF(inst.X + inst.Sprite.Width, inst.Y, 1f, inst.Sprite.Height);
-            Left = new RectangleF(inst.X, inst.Y, 1f, inst.Sprite.Height);
+            Top = new RectangleF(inst.X, inst.Y, inst.HitboxSprite.Width, 1f);
+            Bottom = new RectangleF(inst.X, inst.Y + inst.HitboxSprite.Height, inst.HitboxSprite.Width, 1f);
+            Right = new RectangleF(inst.X + inst.HitboxSprite.Width, inst.Y, 1f, inst.HitboxSprite.Height);
+            Left = new RectangleF(inst.X, inst.Y, 1f, inst.HitboxSprite.Height);
         }
 
         // customized hitbox

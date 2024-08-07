@@ -22,6 +22,11 @@ namespace EngineFP
             HitboxSprite = hitboxSprite;
             SetOriginPoint();
             SetHitbox();
+            /*SetHitbox(
+                new RectangleF(X, Y, HitboxSprite.Width, 5f),
+                new RectangleF(X, Y + HitboxSprite.Height, HitboxSprite.Width, 5f),
+                new RectangleF(X + HitboxSprite.Width, Y, 5f, HitboxSprite.Height),
+                new RectangleF(X, Y, 5f, HitboxSprite.Height));*/
         }
 
         public void SetBody(World world, aVector2 size, float density, aVector2 position)
@@ -44,11 +49,7 @@ namespace EngineFP
         private void SetHitbox()
         {
             IsHitboxSprite();
-            Hitbox = new Hitbox(
-                new RectangleF(X + 5f, Y, HitboxSprite.Width / 2 + 5f, 1f),
-                new RectangleF(X + 5f, Y + HitboxSprite.Height, HitboxSprite.Width / 2 + 5f, 1f),
-                new RectangleF(X + HitboxSprite.Width - 5f, Y, 1f, HitboxSprite.Height),
-                new RectangleF(X + 5f, Y, 1f, HitboxSprite.Height));
+            Hitbox = new Hitbox(this);
         }
 
         public void SetHitbox(RectangleF top, RectangleF bottom, RectangleF right, RectangleF left)

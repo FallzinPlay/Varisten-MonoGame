@@ -2,11 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
-using nkast.Aether.Physics2D.Dynamics;
 using Varisten.Objects.Characters;
 using EngineFP;
 using aVector2 = nkast.Aether.Physics2D.Common.Vector2;
 using mVector2 = Microsoft.Xna.Framework.Vector2;
+using System.Collections.Generic;
 
 // Para publicar:
 // dotnet publish -c Release -r win-x64 /p:PublishReadyToRun=false /p:TieredCompilation=false --self-contained
@@ -14,15 +14,19 @@ namespace Varisten.RunGame
 {
     public class Main : Engine
     {
-
         // Keyboard
         int keyRight;
         int keyLeft;
         int keyUp;
         int keyDown;
 
+        // Physics
+        List<Instance> collisors;
+        private float gravity;
+
         Player player;
         Player player2;
+        Collisor wall;
 
         Color colorRight;
         Color colorLeft;
@@ -31,6 +35,7 @@ namespace Varisten.RunGame
 
         Texture2D spriteTest;
         SpriteFont font;
+        Texture2D wallSprite;
 
         private Camera _cam;
         private GraphicsDeviceManager _graphics;
@@ -54,6 +59,11 @@ namespace Varisten.RunGame
             #region Camera
             _cam = new Camera(GraphicsDevice.Viewport);
             #endregion
+
+            #region Physics
+            collisors = new List<Instance>();
+            gravity = 350f;
+            #endregion
             base.Initialize();
         }
 
@@ -64,6 +74,7 @@ namespace Varisten.RunGame
 
             font = Content.Load<SpriteFont>(@"Fonts\File");
             spriteTest = Content.Load<Texture2D>(@"Sprites\Halek");
+            wallSprite = Content.Load<Texture2D>(@"Sprites\Hitbox\Wall");
 
             player = new Player(spriteTest, "Fallzin");
             player2 = new Player(spriteTest, "Mob");
@@ -72,7 +83,19 @@ namespace Varisten.RunGame
             player2.Sprite = spriteTest;
 
             player2.X = 200f;
-            player2.Y = 200f;
+            player2.Y = 100f;
+
+            collisors.Add(player2);
+
+            // Invisible walls
+            // Create 10 walls
+            for (int i = 0; i < 10; i++)
+            {
+                Instance _inst = new Collisor(wallSprite);
+                _inst.X = (wallSprite.Width - 100f * i) + 5f;
+                _inst.Y = 600f;
+                collisors.Add(_inst);
+            }
         }
 
         protected override void Update(GameTime gameTime)
@@ -82,11 +105,12 @@ namespace Varisten.RunGame
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             try
             {
+                OnFloor = false;
                 #region Keyboard
                 var kState = Keyboard.GetState();
                 keyRight = kState.IsKeyDown(Keys.D) ? 1 : 0;
                 keyLeft = kState.IsKeyDown(Keys.A) ? 1 : 0;
-                keyUp = kState.IsKeyDown(Keys.W) ? 1 : 0;
+                keyUp = kState.IsKeyDown(Keys.W) || kState.IsKeyDown(Keys.Space) ? 1 : 0;
                 keyDown = kState.IsKeyDown(Keys.S) ? 1 : 0;
                 #endregion
 
@@ -107,8 +131,7 @@ namespace Varisten.RunGame
                 // ---------- Player movement
                 player.RightSpeed = player.Speed * dt * keyRight;
                 player.LeftSpeed = player.Speed * dt * keyLeft;
-                player.UpSpeed = player.Speed * dt * keyUp;
-                player.DownSpeed = player.Speed * dt * keyDown;
+                float _vspd = 0;
 
                 // ---- Collision
                 // Change the player's hitbox color if he's colliding and stop the player if he's colliding
@@ -116,29 +139,45 @@ namespace Varisten.RunGame
                 colorLeft = Color.Red;
                 colorTop = Color.Red;
                 colorBottom = Color.Red;
-                if (HorizontalMeeting(player, player2) < 0)
+                foreach (Instance obj in collisors)
                 {
-                    colorLeft = Color.White;
-                    player.LeftSpeed = 0;
+                    if (HorizontalMeeting(player, obj) < 0)
+                    {
+                        colorLeft = Color.White;
+                        player.LeftSpeed = 0;
+                    }
+                    if (HorizontalMeeting(player, obj) > 0)
+                    {
+                        colorRight = Color.White;
+                        player.RightSpeed = 0;
+                    }
+                    if (VerticalMeeting(player, obj) < 0)
+                    {
+                        colorTop = Color.White;
+                        player.UpSpeed = 0;
+                    }
+                    if (VerticalMeeting(player, obj) > 0)
+                    {
+                        colorBottom = Color.White;
+                        _vspd = 0;
+                    }
                 }
-                if (HorizontalMeeting(player, player2) > 0)
+                player.X += player.RightSpeed - player.LeftSpeed;
+                player.Y += _vspd;
+
+                if (OnFloor)
                 {
-                    colorRight = Color.White;
-                    player.RightSpeed = 0;
+                    if (keyUp != 0)
+                    {
+                        _vspd -= player.Jump;
+                    }
                 }
-                if (VerticalMeeting(player, player2) < 0)
+                else
                 {
-                    colorTop = Color.White;
-                    player.UpSpeed = 0;
-                }
-                if (VerticalMeeting(player, player2) > 0)
-                {
-                    colorBottom = Color.White;
-                    player.DownSpeed = 0;
+                    _vspd += gravity;
                 }
 
-                player.X += player.RightSpeed - player.LeftSpeed;
-                player.Y += player.DownSpeed - player.UpSpeed;
+
                 player.Position = new mVector2(player.X, player.Y);
                 // ----------------------------------
                 #endregion
@@ -147,9 +186,11 @@ namespace Varisten.RunGame
                 _cam.Follow(player.Position);
                 #endregion
 
-
-                player2.UpdatePhysics();
-                player2.Position = new mVector2(player2.X, player2.Y);
+                foreach (Instance inst in collisors)
+                {
+                    inst.UpdatePhysics();
+                    inst.Position = new mVector2(inst.X, inst.Y);
+                }
             }
             catch (FPException ex)
             {
@@ -162,6 +203,11 @@ namespace Varisten.RunGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            _spriteBatch.Begin();
+            // Text
+            _spriteBatch.DrawString(font, OnFloor.ToString(), new mVector2(10f, 10f), Color.Black);
+            _spriteBatch.End();
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _cam.Transform);
 
@@ -187,6 +233,13 @@ namespace Varisten.RunGame
             _spriteBatch.DrawRectangle(player2.Hitbox.Bottom, Color.Blue);
             _spriteBatch.DrawRectangle(player2.Hitbox.Right, Color.Blue);
             _spriteBatch.DrawRectangle(player2.Hitbox.Left, Color.Blue);
+            #endregion
+
+            #region Invisible walls
+            foreach (Instance wall in collisors)
+            {
+                _spriteBatch.Draw(wall.HitboxSprite, wall.Position, Color.White);
+            }
             #endregion
 
             // Error

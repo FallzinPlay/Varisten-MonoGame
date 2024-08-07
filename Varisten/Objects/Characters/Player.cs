@@ -9,7 +9,8 @@ namespace Varisten.Objects.Characters
         public Player(Texture2D hitboxSprite, string name) : base(hitboxSprite)
         {
             Name = name;
-            Speed = 100f;
+            Speed = 200f;
+            Jump = 400f;
             Life = MaxLife;
             MaxLife = 15;
             Damage = 1.50d;

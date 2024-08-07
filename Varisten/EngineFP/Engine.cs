@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace EngineFP
 {
     public class Engine : Game
     {
+        public bool OnFloor { get; set; }
+
         public sbyte HorizontalMeeting(Instance inst1, Instance inst2)
         {
             sbyte _dir = 0;
@@ -36,8 +39,11 @@ namespace EngineFP
                     _dir = -1;
                 // collision on the bottom
                 if (inst1.Hitbox.Bottom.Y >= inst2.Hitbox.Top.Y
-                    && inst1.Hitbox.Bottom.Y < inst2.Hitbox.Bottom.Y)
+                    &&inst1.Hitbox.Bottom.Y < inst2.Hitbox.Bottom.Y)
+                {
                     _dir = 1;
+                    OnFloor = true;
+                }
             }
             return _dir;
         }
