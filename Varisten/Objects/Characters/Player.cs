@@ -10,7 +10,7 @@ namespace Varisten.Objects.Characters
         {
             Name = name;
             Speed = 200f;
-            Jump = 400f;
+            Jump = 30f;
             Life = MaxLife;
             MaxLife = 15;
             Damage = 1.50d;

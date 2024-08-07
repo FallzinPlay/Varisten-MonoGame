@@ -12,7 +12,7 @@ namespace EngineFP
         public float X { get; set; }
         public float Y { get; set; }
         public Texture2D Sprite { get; set; }
-        public Body Body { get; private set; }
+        public Body Body { get; set; }
         public mVector2 OriginPoint { get; private set; }
         public Hitbox Hitbox { get; private set; }
         public Texture2D HitboxSprite { get; private set; }
@@ -21,12 +21,6 @@ namespace EngineFP
         {
             HitboxSprite = hitboxSprite;
             SetOriginPoint();
-            SetHitbox();
-            /*SetHitbox(
-                new RectangleF(X, Y, HitboxSprite.Width, 5f),
-                new RectangleF(X, Y + HitboxSprite.Height, HitboxSprite.Width, 5f),
-                new RectangleF(X + HitboxSprite.Width, Y, 5f, HitboxSprite.Height),
-                new RectangleF(X, Y, 5f, HitboxSprite.Height));*/
         }
 
         public void SetBody(World world, aVector2 size, float density, aVector2 position)
