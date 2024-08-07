@@ -63,7 +63,7 @@ namespace Varisten.RunGame
             GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp; // Faz com que o sprite seja desenhado limpo
 
             font = Content.Load<SpriteFont>(@"Fonts\File");
-            spriteTest = Content.Load<Texture2D>(@"Sprites\Marine");
+            spriteTest = Content.Load<Texture2D>(@"Sprites\Halek");
 
             player = new Player(spriteTest, "Fallzin");
             player2 = new Player(spriteTest, "Mob");

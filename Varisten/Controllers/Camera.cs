@@ -13,7 +13,7 @@ public class Camera
     {
         _viewport = viewport;
         _origin = new Vector2(_viewport.Width / 2f, _viewport.Height / 2f);
-        _zoom = 1f; // Zoom padrão
+        _zoom = 0.7f; // Zoom padrão
         UpdateMatrix();
     }
 
@@ -26,7 +26,7 @@ public class Camera
 
     public void Follow(Vector2 target)
     {
-        Position = target - _origin + new Vector2(180f, 150f) ;//_zoom;
+        Position = target - _origin + new Vector2(-20f, 150f) / _zoom;
         UpdateMatrix();
     }
 
