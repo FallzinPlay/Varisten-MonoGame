@@ -6,46 +6,45 @@ namespace EngineFP
     public class Engine : Game
     {
 
-        public sbyte HorizontalMeeting(Instance inst1, Instance inst2)
+        public static string HitboxMeeting(Hitbox hb1, Hitbox hb2)
         {
-            if (inst1.Hitbox.Bottom.Y <= inst2.Hitbox.Top.Y + 10 ||
-            inst1.Hitbox.Top.Y >= inst2.Hitbox.Bottom.Y - 10)
+            if (VerticalAlign(hb1, hb2))
             {
-                return 0;
+                if ((hb1.Right.X + hb1.Right.X) >= hb2.Left.X &&
+                    hb1.Right.X < hb2.Right.X)
+                    return "Right";
+                if ((hb1.Left.X + hb1.Left.X) <= hb2.Right.X &&
+                    hb1.Left.X > hb2.Left.X)
+                    return "Left";
             }
-
-            if (inst1.Hitbox.Right.X >= inst2.Hitbox.Left.X && inst1.Hitbox.Right.X < inst2.Hitbox.Right.X)
+            if (HorizontalMeeting(hb1, hb2))
             {
-                return 1;
+                if ((hb1.Bottom.Y + hb1.Bottom.Y) >= hb2.Top.Y &&
+                    hb1.Bottom.Y < hb2.Bottom.Y)
+                    return "Bottom";
+                if ((hb1.Top.Y + hb1.Top.Y) <= hb2.Bottom.Y &&
+                    hb1.Top.Y > hb2.Top.Y)
+                    return "Left";
             }
-
-            if (inst1.Hitbox.Left.X <= inst2.Hitbox.Right.X && inst1.Hitbox.Left.X > inst2.Hitbox.Left.X)
-            {
-                return -1;
-            }
-
-            return 0;
+            return null;
         }
 
-        public sbyte VerticalMeeting(Instance inst1, Instance inst2)
+        public static bool VerticalAlign(Hitbox hb1, Hitbox hb2)
         {
-            if (inst1.Hitbox.Right.X <= inst2.Hitbox.Left.X + 10 ||
-            inst1.Hitbox.Left.X >= inst2.Hitbox.Right.X - 10)
-            {
-                return 0;
-            }
+            if (hb1.Bottom.Y >= hb2.Top.Y + 3 &&
+            hb1.Top.Y <= hb2.Bottom.Y - 3)
+                return true;
 
-            if (inst1.Hitbox.Top.Y <= inst2.Hitbox.Bottom.Y && inst1.Hitbox.Top.Y > inst2.Hitbox.Top.Y)
-            {
-                return -1;
-            }
+            return false;
+        }
 
-            if (inst1.Hitbox.Bottom.Y >= inst2.Hitbox.Top.Y && inst1.Hitbox.Bottom.Y < inst2.Hitbox.Bottom.Y)
-            {
-                return 1;
-            }
+        public static bool HorizontalMeeting(Hitbox hb1, Hitbox hb2)
+        {
+            if (hb1.Right.X >= hb2.Left.X + 3 &&
+            hb1.Left.X <= hb2.Right.X - 3)
+                return true;
 
-            return 0;
+            return false;
         }
     }
 }
