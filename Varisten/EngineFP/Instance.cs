@@ -1,15 +1,18 @@
 ﻿using MonoGame.Extended;
 using Microsoft.Xna.Framework.Graphics;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
+using Microsoft.Xna.Framework;
+using Varisten.RunGame;
 
 namespace EngineFP
 {
     public abstract class Instance
     {
         // Position
-        public Vector2 Position {  get; set; }
+        public Vector2 Position { get; set; }
         public float X { get; set; }
         public float Y { get; set; }
+        public Vector2 OriginPoint { get; set; }
         // Movement
         public float RightSpeed { get; set; }
         public float LeftSpeed { get; set; }
@@ -22,6 +25,7 @@ namespace EngineFP
         // Sprite
         public Texture2D Sprite { get; set; }
         // Collision
+        public Rectangle hb { get; set; }
         public Hitbox Hitbox { get; private set; }
         public Texture2D HitboxSprite { get; private set; }
 
@@ -32,7 +36,14 @@ namespace EngineFP
 
         public void UpdatePhysics()
         {
+            SetOriginPoint();
             SetHitbox();
+            hb = new Rectangle((int)Position.X, (int)Position.Y, HitboxSprite.Width, HitboxSprite.Height);
+        }
+
+        private void SetOriginPoint()
+        {
+            OriginPoint = new Vector2(Position.X + HitboxSprite.Width / 2, Position.Y + HitboxSprite.Height);
         }
 
         private void SetHitbox()

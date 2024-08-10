@@ -30,6 +30,19 @@ public class Camera
         UpdateMatrix();
     }
 
+    public void ResetPosition(float maxX, float maxY)
+    {
+        float posX = Position.X;
+        float posY = Position.Y;
+        float _width = _viewport.Width / 2;
+        float _height = _viewport.Height / 2;
+        if (Position.X - _width <= 0) posX = 0;
+        if (Position.X + _width >= maxX) posX = maxX;
+        if (Position.Y - _height <= 0) posY = 0;
+        if (Position.Y + _height >= maxY) posY = maxY;
+        Position = new Vector2(posX, posY);
+    }
+
     public void SetZoom(float zoom)
     {
         _zoom = zoom;
